@@ -16,10 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
-public class CalculateTests {
+public class CalculateTests { // класс калькулятор тест
 
     private Calculate calculate = new Calculate();
 
+    //параметризованный тест на сложение,  на вход падаем первое число, второе число, систему счисления и ожидаем результат
     @ParameterizedTest(name = "{displayName} => Первое число = {0}, Второе число = {1}, Система счисления = {2}, Ожидаемый результат = {3}")
     @CsvSource({
             "1, 1, 2, 10",
@@ -33,9 +34,9 @@ public class CalculateTests {
     })
     @DisplayName("Проверка сложения")
     public void testPlus(String number1, String number2, Integer numberSystem, String expectedResult) {
-        String actualResult = calculate.plus(number1, number2, numberSystem);
-        System.out.println(number1 + " + " + number2 + " = " + actualResult);
-        Assertions.assertEquals(expectedResult, actualResult, "Результат сложения не соответствует ожидаемому");
+        String actualResult = calculate.plus(number1, number2, numberSystem); // передаем объекты в метод калькулятора
+        System.out.println(number1 + " + " + number2 + " = " + actualResult); // debug
+        Assertions.assertEquals(expectedResult, actualResult, "Результат сложения не соответствует ожидаемому"); // метод сравнения двух значений, на вход ему подается объект ожидаемы и актуальный и сообщение если например результаты будут не равны
     }
 
     @ParameterizedTest(name = "{displayName} => Первое число = {0}, Второе число = {1}, Система счисления = {2}, Ожидаемый результат = {3}")
@@ -87,7 +88,7 @@ public class CalculateTests {
     })
     @DisplayName("Проверка деления")
     public void testDivide(String number1, String number2, Integer numberSystem, String expectedResult) {
-        if (number2.equals("0")) {
+        if (number2.equals("0")) { // прверка деления на ноль
             Exception exception = assertThrows(ArithmeticException.class, () -> calculate.divide(number1, number2, numberSystem));
             Assertions.assertEquals("/ by zero", exception.getMessage(), "Сообщение исключения не соответствует ожидаемому");
         } else {
@@ -100,19 +101,19 @@ public class CalculateTests {
     @TestFactory
     @DisplayName("Проверка сложения")
     public Stream<DynamicTest> testCalculate() {
-        InputStream testData = getClass().getClassLoader().getResourceAsStream("testData.csv");
+        InputStream testData = getClass().getClassLoader().getResourceAsStream("testData.csv"); // получем из каталога resorces файл
         BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(testData)));
-        return br.lines().skip(1).map(mapCsvLineToDynamicTest());
+        return br.lines().skip(1).map(mapCsvLineToDynamicTest()); // делаем мапу
     }
 
-    private Function<String, DynamicTest> mapCsvLineToDynamicTest() {
-        return s -> {
-            final String[] values = s.split(";");
-            return dynamicTest(values[0].replace("{0}", values[1]).replace("{1}", values[2]), () -> assertCalculate(values));
+    private Function<String, DynamicTest> mapCsvLineToDynamicTest() { // метод мапы
+        return s -> { // построчно передаем значения которые получаются
+            final String[] values = s.split(";"); // используем регулярку со сплитом
+            return dynamicTest(values[0].replace("{0}", values[1]).replace("{1}", values[2]), () -> assertCalculate(values)); // метод динамик тест
         };
     }
 
-    private void assertCalculate(String[] values) {
+    private void assertCalculate(String[] values) { // метод asserCalculate для динамических тестов
         String result = calculate.plus(values[1], values[2], Integer.parseInt(values[3]));
         System.out.println(values[1] + " + " + values[2] + " = " + result);
         assertEquals(values[4], result, "Результат сложения не соответствует ожидаемому");
