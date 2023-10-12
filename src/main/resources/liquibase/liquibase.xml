@@ -2,16 +2,22 @@
 
     <!--Added the entity Car-->
     <changeSet id="3" author="user">
-        <createTable tableName="sys_count">
-            <column name="2" type="varchar(255)">
+        <createTable tableName="counttable">
+            <column name="first_num" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="8" type="varchar(255)">
+            <column name="second_num" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="price" type="double">
+            <column name="sys_count" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="data_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+        <column name="type_ops" type="varchar(255)">
+            <constraints nullable="true" />
+        </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>
