@@ -1,11 +1,16 @@
 spring:
-  application.name: lab2
+  application:
+    name: lab2
 
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: username
     password: password
+    driver-class-name: org.postgresql.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update # Устанавливает режим автоматического обновления схемы БД (может быть create, update, none и другие)
 
   liquibase:
     enabled: true

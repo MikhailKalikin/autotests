@@ -44,10 +44,6 @@ public class CalculationResult {
         this.operand2 = operand2;
     }
 
-    public String getResult() {
-        return result;
-    }
-
     public void setResult(String result) {
         this.result = result;
     }
